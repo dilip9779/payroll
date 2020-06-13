@@ -1,13 +1,13 @@
-# payroll
+# Payroll
 Employee System
 
 
 #admi User Details
-Username :admin
-Password:admin
+    - Username :admin
+    - Password:admin
 
 #Database
--admintest
+  - admintest
 
 #config
--Base URL http://localhost/cibadmin
+  - Base URL http://localhost/cibadmin
