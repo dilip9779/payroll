@@ -2,11 +2,11 @@
 Employee System
 
 
-#admi User Details
+# admi User Details
     - Username :admin
     - Password:admin
 
-#Database
+# Database
   - admintest
 
 #config
