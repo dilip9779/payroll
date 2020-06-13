@@ -9,5 +9,5 @@ Employee System
 # Database
   - admintest
 
-# config
+# Config
   - Base URL http://localhost/cibadmin
