@@ -2,12 +2,12 @@
 Employee System
 
 
-# admi User Details
+# Admi User Details
     - Username :admin
     - Password:admin
 
 # Database
   - admintest
 
-#config
+# config
   - Base URL http://localhost/cibadmin
