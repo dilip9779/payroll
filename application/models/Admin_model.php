@@ -44,65 +44,13 @@ class Admin_model extends CI_Model {
 		    else
 		        $ipaddress = 'UNKNOWN';
 		    return $ipaddress;
-	   }
-
-        public function updateGroups($postData=null, $action=null) {
-                if ($action == "add") {
-                    $error = 0;
-                    if (!isset($postData["name"]) || empty($postData["name"])) { $error = 2;} else { $name = $this->db->escape(strip_tags($postData["name"]));}
-                    if ($error == 2) { return $error; }
-                    $sql = "SELECT * FROM admin_groups WHERE name = ".$name;
-                    $query = $this->db->query($sql);
-                    if ($query->num_rows() > 0) {
-                        return 3;
-                    } else {
-                        $sql2 = "INSERT INTO admin_groups (name) VALUES (".$name.")";
-                        $this->db->query($sql2);
-                        return TRUE;
-                    }
-                }
-                if ($action == "edit") {
-                    $error = 0;
-                    if (!isset($postData["name"]) || empty($postData["name"])) { $error = 2;} else { $name = $this->db->escape(strip_tags($postData["name"]));}
-                    if (!isset($postData["id"]) || empty($postData["id"])) { $error = 3;} else { $id = $this->db->escape(strip_tags($postData["id"]));}
-                    if ($error == 2) { return $error; }
-                    $sql = "SELECT * FROM admin_groups WHERE name = ".$name;
-                    $query = $this->db->query($sql);
-                    if ($query->num_rows() > 0) {
-                        return 4;
-                    } else {
-                        $sql2 = "UPDATE admin_groups SET name = ".$name." WHERE id = ".$id;
-                        $this->db->query($sql2);
-                        return TRUE;
-                    }
-                }
-                if ($action == "delete") {
-                    $admin_group = $this->db->escape(strip_tags((int)$postData["id"]));
-                    $sql = "SELECT * FROM admin WHERE admin_group = ".$admin_group;
-                    $query = $this->db->query($sql);
-                    if ($query->num_rows() > 0) {
-                        return FALSE;
-                    } else {
-                        $sql2 = "DELETE FROM admin_groups WHERE id = ".$admin_group;
-                        $this->db->query($sql2);
-                        return TRUE;
-                    }
-                }
-        }
-        
-        public function getAdminGroups($additional="") {
-            if ($additional !== "") { $additional = "WHERE id = ".$this->db->escape($additional); }
-            $sql = "SELECT * FROM admin_groups ".$additional;
-            $query = $this->db->query($sql);
-            if ($query->num_rows() > 0) {
-                return $query->result_array();
-            } else {
-                return array();
-            }
-        }
-
-        public function getAdminInfo($adminid=null) {
-            $sql = "SELECT * FROM admin WHERE id = ".$this->db->escape(strip_tags((int)$adminid));
+       }
+       
+        public function getPermDDOId($user_id=null) {
+            $sql = "SELECT d.perm_ddo_id,d.field_dept_cd,d.office_name,d.dept_code,f.field_dept_desc 
+            FROM ddo_mast d LEFT JOIN
+            field_dept  f ON f.field_dept_cd=d.field_dept_cd and f.adm_dept_cd=d.dept_code 
+            WHERE d.trea_code || d.ddo_code = '".$this->db->escape(strip_tags($user_id))."' AND d.field_dept_cd IS NOT NULL AND d.perm_ddo_id IS NOT NULL";
             $query = $this->db->query($sql);
             if ($query->num_rows() > 0) {
                 return $query->row();
@@ -111,119 +59,96 @@ class Admin_model extends CI_Model {
             }
         }
 
-        public function getAdmins() {
-                $sql = "SELECT a.id, a.username, ag.name as role, a.name as fullname FROM admin a 
-                LEFT JOIN admin_groups ag ON a.admin_group = ag.id";
-                $query = $this->db->query($sql);
-                if ($query->num_rows() > 0) {
-                        return $query->result_array();
-                } else {
-                        return array();
-                }
-        }
-
-        public function updateAdmins($postData=null, $action=null) {
-                if ($action == "add") {
-                        $error = 0;
-                        if (!isset($postData["username"]) || empty($postData["username"])) { $error = 2;} else { $username = $this->db->escape(strip_tags($postData["username"]));}
-                        if (!isset($postData["password"]) || empty($postData["password"])) { $error = 3;} else { $password = strip_tags($postData["password"]);}
-                        if (!isset($postData["password2"]) || empty($postData["password2"])) { $error = 4;} else { $password2 = strip_tags($postData["password2"]);}
-                        if (!isset($postData["email"]) || empty($postData["email"])) { $error = 5;} else { $email = $this->db->escape(strip_tags($postData["email"]));}
-                        if (!isset($postData["name"]) || empty($postData["name"])) { $error = 6;} else { $name = $this->db->escape(strip_tags($postData["name"]));}
-                        if (!isset($postData["admin_group"]) || empty($postData["admin_group"])) { $error = 7;} else { $admin_group = $this->db->escape(strip_tags($postData["admin_group"]));} 
-                        if (!isset($postData["address"]) || empty($postData["address"])) { $address = "''";} else { $address = $this->db->escape(strip_tags($postData["address"]));} 
-                        if (!isset($postData["address2"]) || empty($postData["address2"])) { $address2 = "''";} else { $address2 = $this->db->escape(strip_tags($postData["address2"]));} 
-                        if (!isset($postData["city"]) || empty($postData["city"])) { $city = "''";} else { $city = $this->db->escape(strip_tags($postData["city"]));} 
-                        if (!isset($postData["state"]) || empty($postData["state"])) { $state = "''";} else { $state = $this->db->escape(strip_tags($postData["state"]));} 
-                        if (!isset($postData["zip"]) || empty($postData["zip"])) { $zip = "''";} else { $zip = $this->db->escape(strip_tags($postData["zip"]));}   
-                        $verification_key = $this->db->escape($this->generateVerificationKey());
-                        $salt = $this->generateSalt();
-                        if ($password !== $password2) { $error = 8; } else { $password = $this->db->escape(md5($salt.$password)); }
-                        if ($error > 0) { return $error; }
-                        $now = $this->db->escape(time());
-                        $sql = "SELECT * FROM admin WHERE username = ".$username;
-                        $query = $this->db->query($sql);
-                        if ($query->num_rows() > 0) {
-                                return 9;
-                        } else {
-                                $sql2 = "INSERT INTO admin (username,password,email,created_date,verification_key,admin_group,name,address,address2,city,state,zip) VALUES ($username, $password, $email, NOW(), $verification_key, $admin_group, $name, $address, $address2, $city, $state, $zip)";
-                                $this->db->query($sql2);
-                                return TRUE;   
-                        }
-                        
-                }
-                if ($action == "edit") {
-                        $error = 0; 
-                        if (!isset($postData["username"]) || empty($postData["username"])) { $username = ""; } else { $username = $this->db->escape(strip_tags($postData["username"]));}
-                        if (!isset($postData["password"]) || empty($postData["password"])) { $pass = 0; } else { $pass = 1; $password = strip_tags($postData["password"]);}
-                        if (!isset($postData["password2"]) || empty($postData["password2"])) { $password2 = "";} else { $password2 = strip_tags($postData["password2"]);}
-                        if (!isset($postData["email"]) || empty($postData["email"])) { $error = 5;} else { $email = $this->db->escape(strip_tags($postData["email"]));}
-                        if (!isset($postData["name"]) || empty($postData["name"])) { $error = 6;} else { $name = $this->db->escape(strip_tags($postData["name"]));}
-                        if (!isset($postData["admin_group"]) || empty($postData["admin_group"])) { $error = 7;} else { $admin_group = $this->db->escape(strip_tags($postData["admin_group"]));} 
-                        if (!isset($postData["address"]) || empty($postData["address"])) { $address = "''";} else { $address = $this->db->escape(strip_tags($postData["address"]));} 
-                        if (!isset($postData["address2"]) || empty($postData["address2"])) { $address2 = "''";} else { $address2 = $this->db->escape(strip_tags($postData["address2"]));} 
-                        if (!isset($postData["city"]) || empty($postData["city"])) { $city = "''";} else { $city = $this->db->escape(strip_tags($postData["city"]));} 
-                        if (!isset($postData["state"]) || empty($postData["state"])) { $state = "''";} else { $state = $this->db->escape(strip_tags($postData["state"]));} 
-                        if (!isset($postData["zip"]) || empty($postData["zip"])) { $zip = "''";} else { $zip = $this->db->escape(strip_tags($postData["zip"]));}   
-                        if ($error > 0) { return $error; }
-                        $sql = "SELECT * FROM admin WHERE username = ".$username; 
-                        $query = $this->db->query($sql);
-                        if ($query->num_rows() > 0) {
-                                if ($pass == 0) {
-                                    $sql = "UPDATE admin SET email = $email, name = $name, admin_group = $admin_group, address = $address, address2 = $address2, city = $city, state = $state, zip = $zip WHERE id = ".$this->db->escape($query->row()->id);
-                                    $this->db->query($sql);
-                                    return TRUE;
-                                } else {
-                                    if ($password !== $password2) { return 8; }
-                                    $salt = $this->generateSalt();
-                                    $password = $this->db->escape(md5($salt.$password));
-                                    $sql = "UPDATE admin SET email = $email, name = $name, admin_group = $admin_group, address = $address, address2 = $address2, city = $city, state = $state, zip = $zip, password = $password WHERE id = ".$this->db->escape($query->row()->id);
-                                    $this->db->query($sql);
-                                    return TRUE;
-                                }   
-                        } else {
-                                return 9;
-                        }
-                }
-                if ($action == "delete") {
-                        $admin_id = $this->db->escape(strip_tags((int)$postData["id"]));
-                        if ((int)$postData["id"] == $this->session->userdata("admin_id")) { 
-                                return FALSE;
-                        } else {
-                           $sql = "DELETE FROM admin WHERE id = ".$admin_id;
-                           $this->db->query($sql);
-                           return TRUE;     
-                        }
-                        
-                }
-        }
-
         public function adminLogin($postData) {
+            if (!isset($postData["usertype"])) { return 2; }
         	if (!isset($postData["username"])) { return 2; }
-        	if (!isset($postData["password"])) { return 2; }
-                $salt = $this->generateSalt();
-        	$username = $this->db->escape(strip_tags($postData["username"]));
-        	$password = $this->db->escape(strip_tags(md5($salt.$postData["password"])));
-        	$sql = "SELECT * FROM admin WHERE username = ".$username." AND password = ".$password;
+            if (!isset($postData["password"])) { return 2; }
+            $loginType = $postData["usertype"];
+            $username = $this->db->escape(strip_tags(strtoupper($postData["username"])));
+            $password = $this->db->escape(strip_tags(md5($postData["password"])));
+            if($loginType=='D' || $loginType=='T' || $loginType=='MD' || $loginType=='AG'){
+            $sql = "SELECT password,pass_confirm,role,oper_flag FROM bds_users WHERE user_id = $username 
+                    AND (password = $password OR pass_confirm = $password) AND oper_flag <> 'N'";
+                    $table ='bds_users';
+                    $user_id = 'user_id';
+            } else if ($loginType=='E'){
+                $sql = "SELECT eis_pass as password,role,oper_flag FROM eis_users WHERE emp_cd = $username 
+                    AND eis_pass=$password";
+                    $table ='eis_users';
+                    $user_id = 'emp_cd';
+            }
+            error_log($sql);
         	$query = $this->db->query($sql);
         	if ($query->num_rows() > 0) {
-        		$q = $query->row();
-        		$this->session->set_userdata("username",$q->username);
-        		$this->session->set_userdata("verification_key",$q->verification_key);
-        		$this->session->set_userdata("admin_id", $q->id);
+                $q = $query->row();
+                $passwd = $q->password;
+                if ($loginType !='E'){
+                    $pass_confirm = $q->pass_confirm;
+                }
+                $role = $q->role;
+                $this->session->set_userdata("sess_lg_login",$username);
+                $this->session->set_userdata("sess_loginType",$loginType);
+                if($role == '3')
+                {
+                    $permddo = $this->getPermDDOId($username);
+                    $app_type="DE";  
+                    if($password == $passwd)
+                    {
+                        $appRole = 'A';
+                        $welcome_str = 'Welcome DDO-Assistant : '.$permddo->office_name;
+                    }
+                    elseif($pass_confirm == $passwd)
+                    {
+                        $appRole = 'D';
+                        $welcome_str = 'Welcome DDO : '.$permddo->office_name;
+                    }
+                    $perm_ddo_id = $permddo->perm_ddo_id;
+                    $field_dept_cd = $permddo->field_dept_cd;
+                    $field_dept_desc = $permddo->field_dept_desc;
+                    $off_id = NULL;
+                }   
+                elseif($role == 'M')
+                {
+                    $app_type = 'MD';
+                    $welcome_str = 'Welcome Master Data Controller :';
+                    if($password == $passwd)
+                    {
+                        $appRole = 'A';
+                    }
+                    elseif($pass_confirm == $passwd)
+                    {
+                        $appRole = 'D';
+                    }
+                    $perm_ddo_id = NULL;
+                    $field_dept_cd = NULL;
+                    $field_dept_desc = NULL;
+                    $off_id = NULL;
+                    
+                }               
+                $this->session->set_userdata("appRole",$appRole);
+                $this->session->set_userdata("app_type",$app_type);
+                $this->session->set_userdata("sess_welcome_str",$welcome_str);
+                $this->session->set_userdata("sess_perm_ddo_id",$perm_ddo_id);
+                $this->session->set_userdata("sess_field_dept_code",$field_dept_cd);
+                $this->session->set_userdata("sess_field_dept_desc",$field_dept_desc);
+                $this->session->set_userdata("sess_off_id",$off_id);                             
         		$this->session->set_userdata("loggedin",1);
         		$ip = $this->getUserIP();
-        		$sql2 = "UPDATE admin SET last_signin = NOW(), ip = ".$this->db->escape($ip)." WHERE id = ".$q->id;
+        		$sql2 = "UPDATE $table SET last_signin = NOW(), ip = ".$this->db->escape($ip)." WHERE $user_id = ".$username;
         		$this->db->query($sql2);
         		return TRUE;
         	} else {
         		return 2;
         	}
         }
-
         public function verifyUser() {
-        	if ($this->session->userdata("username") && $this->session->userdata("verification_key") && $this->session->userdata("admin_id") && $this->session->userdata("loggedin")) {
-        		$sql = "SELECT * FROM admin WHERE id = ".$this->db->escape(strip_tags((int)$this->session->userdata("admin_id")))." AND verification_key = ".$this->db->escape(strip_tags($this->session->userdata("verification_key")))." AND username = ".$this->db->escape(strip_tags($this->session->userdata("username")));
+        	if ($this->session->userdata("sess_lg_login") && $this->session->userdata("sess_loginType") && $this->session->userdata("appRole") && $this->session->userdata("loggedin")) {
+                if($this->session->userdata("appRole") != 'E'){
+                    $sql = "SELECT * FROM bds_users WHERE user_id = ".$this->session->userdata("sess_lg_login");
+                }else{
+                    $sql = "SELECT * FROM eis_users WHERE emp_cd = ".$this->session->userdata("sess_lg_login");
+                }
+                error_log($sql);
         		$query = $this->db->query($sql);
         		if ($query->num_rows() > 0) {
         			return TRUE;
@@ -235,12 +160,17 @@ class Admin_model extends CI_Model {
         		$this->logout();
         		redirect(base_url()."login", 'auto');
         	}
-        }
-
+        }        
         public function logout() {
-        	$this->session->unset_userdata("username");
-        	$this->session->unset_userdata("verification_key");
-        	$this->session->unset_userdata("admin_id");
+        	$this->session->unset_userdata("sess_lg_login");
+        	$this->session->unset_userdata("sess_loginType");
+            $this->session->unset_userdata("appRole");
+            $this->session->unset_userdata("sess_welcome_str");
+            $this->session->unset_userdata("app_type");
+            $this->session->unset_userdata("sess_perm_ddo_id");
+            $this->session->unset_userdata("sess_field_dept_code");
+            $this->session->unset_userdata("sess_field_dept_desc");
+            $this->session->unset_userdata("sess_off_id");
         	$this->session->unset_userdata("loggedin");
         	return TRUE;
         }
