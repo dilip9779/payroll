@@ -18,8 +18,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <a class="scroll-to-top rounded" href="#page-top">
 	<i class="fa fa-chevron-up"></i>
 </a>
-        <script src="<?=base_url()?>public/js/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
-        <script src="<?=base_url()?>public/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="<?=base_url()?>public/js/jquery-3.4.1.min.js"></script>
+        <script src="<?=base_url()?>public/js/bootstrap.bundle.min.js"></script>
         <script src="<?=base_url()?>public/js/scripts.js"></script>
+		<script src="<?=base_url()?>public/js/jquery.dataTables.min.js"></script>
+		<script src="<?=base_url()?>public/js/dataTables.bootstrap4.min.js"></script>
+		<script src="<?=base_url()?>public/assets/used/datatables.js"></script>
     </body>
 </html>
