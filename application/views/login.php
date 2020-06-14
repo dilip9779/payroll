@@ -62,7 +62,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 </footer>
             </div>
         </div>
-        <script src="<?=base_url()?>public/js/jquery-3.4.1.min.js"></script>
+        <script src="<?=base_url()?>public/js/jquery-3.4.1.min.js"></script> 
         <script src="<?=base_url()?>public/js/bootstrap.bundle.min.js"></script>
         <script src="<?=base_url()?>public/js/scripts.js"></script>
     </body>

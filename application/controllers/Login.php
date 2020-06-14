@@ -8,7 +8,7 @@ class Login extends CI_Controller {
 		$data["error"] = 0;
 		if ($this->input->post()){ 
 			$postData = $this->input->post();
-			$auth = $this->Admin_model->adminLogin($postData);
+			$auth = $this->Admin_model->adminLogin($postData); 
 				if ($auth == true) {
 					redirect(base_url(), "auto");
 				} else {
