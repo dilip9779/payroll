@@ -15,10 +15,10 @@
 			></a>
 			<div class="collapse" id="collapseLocation" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
 				<nav class="sb-sidenav-menu-nested nav">
-					<a class="nav-link" href="<?=base_url()?>district">District</a>
-					<a class="nav-link" href="<?=base_url()?>taluka">Taluka</a>
-					<a class="nav-link" href="<?=base_url()?>town">Town</a>
-					<a class="nav-link" href="<?=base_url()?>village">Village</a>
+					<a class="nav-link" href="<?=base_url()?>master/district">District</a>
+					<a class="nav-link" href="<?=base_url()?>master/taluka">Taluka</a>
+					<a class="nav-link" href="<?=base_url()?>master/town">Town</a>
+					<a class="nav-link" href="<?=base_url()?>master/village">Village</a>
 				</nav>
 			</div>
 			<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages"

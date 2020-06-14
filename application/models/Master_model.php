@@ -13,7 +13,7 @@ class Master_model extends CI_Model {
             WHERE d.state_code_census = 24 AND d.state_code_census = s.state_code_census  AND district_code_census<>'0' ORDER BY district_code_census FOR READ ONLY";
             $query = $this->db->query($sql);
             if ($query->num_rows() > 0) {
-                return $query->row();
+                return $query->result_array();
             } else {
                 return array();
             }

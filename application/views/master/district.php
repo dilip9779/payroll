@@ -1,18 +1,20 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed'); 
 ?>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="<?=base_url()?>">Dashboard</a></li>
-                <li class="breadcrumb-item">Master</li>
-                <li class="breadcrumb-item active">District</li>
-            </ol>
-            <div class="card mb-3">
-                <div class="card-header">
-                    <i class="fa fa-table"></i> District<a href="<?=base_url()?>master/district/add"><button class="btn btn-primary">+</button></a>
+<main>
+	<div class="container-fluid">
+		<h1 class="mt-4">District</h1>
+		<ol class="breadcrumb mb-4">
+			<li class="breadcrumb-item"><a href="<?=base_url()?>">Dashboard</a></li>
+			<li class="breadcrumb-item active">District</li>
+		</ol>
+		<div class="card mb-4">
+        <div class="card-header">
+                    <i class="fa fa-table"></i> District<a href="<?=base_url()?>master/district/add"><button class="btn btn-primary right">+</button></a>
                 </div>
-                <div class="card-block">
-                    <div class="table-responsive">
-                        <table class="table table-bordered" width="100%" id="dataTable" cellspacing="0">
+			<div class="card-body">
+            <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
                                     <th>State</th>
@@ -30,17 +32,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 </tr>
                             </tfoot>
                             <tbody>
-                            <?php foreach ($admins as $v) { ?>
+                            <?php  foreach ($district as $v) { ?>
                                 <tr>
-                                    <td><?=$v["id"]?></td>
-                                    <td><?=$v["fullname"]?></td>
-                                    <td><?=$v["username"]?></td>
-                                    <td><?=$v["role"]?></td>
-                                    <td><form method="POST" action="" style="display:inline;"><input type="hidden" name="action" value="delete"><input type="hidden" name="id" value="<?=$v["id"]?>"><input type="submit" class="btn btn-primary" value="Delete"></form> <a href="<?=base_url()?>settings/admins/edit/<?=$v["id"]?>"><button class="btn btn-primary">Edit</button></a> </td>
+                                    <td><?=$v["state_name_eng"]?></td>
+                                    <td><?=$v["district_code_census"]?></td>
+                                    <td><?=$v["district_name_english"]?></td>
+                                    <td><form method="POST" action="" style="display:inline;"><input type="hidden" name="action" value="delete"><input type="hidden" name="id" value="<?=$v["state_code_census"]?>"><input type="submit" class="btn btn-primary" value="Delete"></form> <a href="<?=base_url()?>settings/admins/edit/<?=$v["state_code_census"]?>"><button class="btn btn-primary">Edit</button></a> </td>
                                 </tr>
                             <?php } ?> 
                             </tbody>
                         </table>
-                    </div>
-                </div> 
+                    </div>           
             </div>
+		</div>
+	</div>
+</main>
