@@ -9,13 +9,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>PayRoll</title>
+        <title>Gujarat Employee Information System</title>
+        <link rel="icon" href="<?=base_url()?>public/images/logo.png" />
         <link href="<?=base_url()?>public/css/styles.css" rel="stylesheet" />
         <script src="<?=base_url()?>public/js/all.min.js"></script>
     </head>
     <body class="sb-nav-fixed" id="page-top">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <a class="navbar-brand" href="<?=base_url()?>">Start Bootstrap</a><button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button
+            <a class="navbar-brand" href="<?=base_url()?>">GujEIS</a><button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button
             >
             <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
                 <div class="input-group">

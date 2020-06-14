@@ -1,40 +1,31 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed'); 
 ?>
-
-
-
-            <!-- Breadcrumbs -->
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="<?=base_url()?>">Dashboard</a></li>
-                <li class="breadcrumb-item">Settings</li>
-                <li class="breadcrumb-item active">Admins</li>
+                <li class="breadcrumb-item">Master</li>
+                <li class="breadcrumb-item active">District</li>
             </ol>
- 
-
-            <!-- Example Tables Card -->
             <div class="card mb-3">
                 <div class="card-header">
-                    <i class="fa fa-table"></i> Admin Users <a href="<?=base_url()?>settings/admins/add"><button class="btn btn-primary">+</button></a>
+                    <i class="fa fa-table"></i> District<a href="<?=base_url()?>master/district/add"><button class="btn btn-primary">+</button></a>
                 </div>
                 <div class="card-block">
                     <div class="table-responsive">
                         <table class="table table-bordered" width="100%" id="dataTable" cellspacing="0">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Username</th>
-                                    <th>Admin Group</th>
+                                    <th>State</th>
+                                    <th>District Code</th>
+                                    <th>District Name</th>
                                     <th>Action</th> 
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Username</th>
-                                    <th>Admin Group</th>
+                                    <th>State</th>
+                                    <th>District Code</th>
+                                    <th>District Name</th>
                                     <th>Action</th> 
                                 </tr>
                             </tfoot>
