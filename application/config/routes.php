@@ -51,4 +51,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 $route['default_controller'] = 'start';
 $route['404_override'] = '';
+$route['master/district'] = 'district';
+$route['master/taluka'] = 'taluka';
+$route['master/town'] = 'town';
+$route['master/village'] = 'village';
 $route['translate_uri_dashes'] = FALSE;

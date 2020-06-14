@@ -77,7 +77,6 @@ class Admin_model extends CI_Model {
                     $table ='eis_users';
                     $user_id = 'emp_cd';
             }
-            error_log($sql);
         	$query = $this->db->query($sql);
         	if ($query->num_rows() > 0) {
                 $q = $query->row();
@@ -146,9 +145,8 @@ class Admin_model extends CI_Model {
                 if($this->session->userdata("appRole") != 'E'){
                     $sql = "SELECT * FROM bds_users WHERE user_id = ".$this->session->userdata("sess_lg_login");
                 }else{
-                    $sql = "SELECT * FROM eis_users WHERE emp_cd = ".$this->session->userdata("sess_lg_login");
+                    $sql = "SELECT * FROM eis_users WHERE emp_cd = ".$this->session->userdata("sess_lg_login"); 
                 }
-                error_log($sql);
         		$query = $this->db->query($sql);
         		if ($query->num_rows() > 0) {
         			return TRUE;
